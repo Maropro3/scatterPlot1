@@ -1,0 +1,131 @@
+body {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: 0;
+    overflow: hidden;
+    background-color: rgb(31, 31, 31);
+}
+
+
+.title{
+    font-size: 2.2em;
+}
+
+text {
+    font-size: 1.6em;
+    font-family: sans-serif;
+    fill: #8a8480
+}
+
+.tick text {
+    font-size: 1.7em;
+    fill: #aca4a1
+}
+
+.tick line {
+    stroke: #6e6b6b;
+    
+}
+
+.axis-label {
+    font-size: 2.0em;
+    fill: #a8a09e
+}
+
+#menus {
+    font-size: 2.2em;
+    position: relative;
+    margin: 10px;
+    font-family: sans-serif;
+    color: #bdb5b0
+    
+}
+
+#menus select{
+    font-size: 2.2rem;
+    background-color: rgb(6, 58, 100);
+    color: #c4bcb7;
+    min-width: 160px;
+    z-index: 1;
+}
+
+
+#menus select option{
+    font-size: 1rem;
+    background-color: rgb(6, 58, 100);
+}
+
+#menus select option:hover{
+    font-size: 1rem;
+    background-color: purple;
+}
+
+
+
+.title {
+    text-anchor: middle;
+    font-size: 1em;
+}
+
+#drop {
+    text-anchor: middle;
+    background-color: #4CAF50;
+    color: black;
+    border: none;
+    cursor: pointer;
+
+}
+
+#slider-range{
+    position: relative;
+   
+}
+
+.tooltip {
+    position: absolute;
+    pointer-events: none;
+    background-color: rgb(54, 54, 54);
+    font-family: sans-serif;
+    color: blanchedalmond;
+    font-size: 1.1em;
+    border: 1px;
+    border-style: groove;
+    text-align: center;
+    font-size: 1em;
+    padding: 1px;
+
+}
+
+/* .tooltip {
+    position: absolute;
+    width: 192px;
+    height: 65px;
+    pointer-events: none;
+    background-color: #474747;
+    border: 1px;
+    border-style: groove;
+    text-align: center;
+    font-size: 0.9em;
+    vertical-align: middle;
+    padding: 1px;
+    font-family: sans-serif;
+
+} */
+
+.legendText{
+    font-size: 1.2em;
+}
+
+.legend{
+    outline: solid 1px #afafab;
+    outline-offset: 5px;
+    border-radius: 10px;
+    
+}
+
+.track-fill{
+    stroke: rgb(96, 168, 228)
+}
