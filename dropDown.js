@@ -93,7 +93,7 @@ export const dropDown = (selection, props) => {
                 slider
                 .min(d3.min(dataF, d => d['st_lum']))
                 .max(d3.max(dataF, d => d['st_lum']))
-                .ticks(10)
+                .ticks(6)
                 .default([d3.min(dataF, d => d['st_lum']), d3.max(dataF, d => d['st_lum'])]);
                 range = [d3.min(dataF, d => d['st_lum']), d3.max(dataF, d => d['st_lum'])];
                 xOffset = -230;
@@ -113,7 +113,7 @@ export const dropDown = (selection, props) => {
                 slider
                 .min(d3.min(dataF, d => d['pl_bmasse']))
                 .max(d3.max(dataF, d => d['pl_bmasse']))
-                .ticks(10)
+                .ticks(6)
                 .default([d3.min(dataF, d => d['pl_bmasse']), d3.max(dataF, d => d['pl_bmasse'])]);
                 range = [d3.min(dataF, d => d['pl_bmasse']), d3.max(dataF, d => d['pl_bmasse'])];
                 xOffset = -200;
@@ -153,7 +153,7 @@ export const dropDown = (selection, props) => {
                 slider
                 .min(d3.min(dataF, d => d['pl_orbper']))
                 .max(d3.max(dataF, d => d['pl_orbper']))
-                .ticks(10)
+                .ticks(6)
                 .default([d3.min(dataF, d => d['pl_orbper']), d3.max(dataF, d => d['pl_orbper'])]);
                 range = [d3.min(dataF, d => d['pl_orbper']), d3.max(dataF, d => d['pl_orbper'])];
                 xOffset = -225;
@@ -213,7 +213,7 @@ export const dropDown = (selection, props) => {
                 slider
                 .min(d3.min(dataF, d => d['pl_eqt']))
                 .max(d3.max(dataF, d => d['pl_eqt']))
-                .ticks(6)
+                .ticks(7)
                 .default([d3.min(dataF, d => d['pl_eqt']), d3.max(dataF, d => d['pl_eqt'])]);
                 range = [d3.min(dataF, d => d['pl_eqt']), d3.max(dataF, d => d['pl_eqt'])];
                 xOffset = -245;

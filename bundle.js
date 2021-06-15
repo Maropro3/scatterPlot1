@@ -98,7 +98,7 @@
                     slider
                     .min(d3.min(dataF, d => d['st_lum']))
                     .max(d3.max(dataF, d => d['st_lum']))
-                    .ticks(10)
+                    .ticks(6)
                     .default([d3.min(dataF, d => d['st_lum']), d3.max(dataF, d => d['st_lum'])]);
                     range = [d3.min(dataF, d => d['st_lum']), d3.max(dataF, d => d['st_lum'])];
                     xOffset = -230;
@@ -118,7 +118,7 @@
                     slider
                     .min(d3.min(dataF, d => d['pl_bmasse']))
                     .max(d3.max(dataF, d => d['pl_bmasse']))
-                    .ticks(10)
+                    .ticks(6)
                     .default([d3.min(dataF, d => d['pl_bmasse']), d3.max(dataF, d => d['pl_bmasse'])]);
                     range = [d3.min(dataF, d => d['pl_bmasse']), d3.max(dataF, d => d['pl_bmasse'])];
                     xOffset = -200;
@@ -158,7 +158,7 @@
                     slider
                     .min(d3.min(dataF, d => d['pl_orbper']))
                     .max(d3.max(dataF, d => d['pl_orbper']))
-                    .ticks(10)
+                    .ticks(6)
                     .default([d3.min(dataF, d => d['pl_orbper']), d3.max(dataF, d => d['pl_orbper'])]);
                     range = [d3.min(dataF, d => d['pl_orbper']), d3.max(dataF, d => d['pl_orbper'])];
                     xOffset = -225;
@@ -218,7 +218,7 @@
                     slider
                     .min(d3.min(dataF, d => d['pl_eqt']))
                     .max(d3.max(dataF, d => d['pl_eqt']))
-                    .ticks(6)
+                    .ticks(7)
                     .default([d3.min(dataF, d => d['pl_eqt']), d3.max(dataF, d => d['pl_eqt'])]);
                     range = [d3.min(dataF, d => d['pl_eqt']), d3.max(dataF, d => d['pl_eqt'])];
                     xOffset = -245;
@@ -272,8 +272,18 @@
           methodsF.push(d3.select(this).selectAll('text').text());
           onLegendChange(methodsF);
         }
+        else if(methodsF.length === 6) {
+          d3.selectAll('.gLegend')
+          .attr('opacity', 0.2);
+          d3.select(this)   
+          .attr('opacity', 1);
+          methodsF = [];
+          methodsF.push(d3.select(this).selectAll('text').text());
+          onLegendChange(methodsF);
+         }
         else {
           if ( d3.select(this).attr('opacity') == 1) { 
+
             d3.select(this)   
             .attr('opacity', 0.2);
             methodsF = methodsF.filter (
@@ -287,8 +297,9 @@
           methodsF.push(d3.select(this).selectAll('text').text());
           onLegendChange(methodsF);
           }
-          
         }
+       
+     
       };
 
       const onDBCLick = function(event, d){
@@ -363,11 +374,6 @@
       .style('user-select', 'none') 
       .style('fill', '#a8a09e')
       .text(d => d);
-
-
-
-
-      
     };
 
     const scatterPlot = (selection, props) => {
@@ -385,10 +391,13 @@
             height,
             xUnits,
             yUnits,
+            flag,
             dateRange,
             colorScale,
             colorValue,
-            data
+            data,
+            data2
+            
 
         } = props;
 
@@ -540,7 +549,7 @@
         }
        };
 
-       d3.selectAll('.tooltip').remove();
+      d3.selectAll('.tooltip').remove();
        
         var tooltip = d3.select("body").append("div")
         .attr("class", "tooltip")
@@ -649,24 +658,92 @@
         
         const circles =  gZ.merge(gZEnter).selectAll('circle').data(dataF);
 
-       circles.enter().append('circle')
-        .attr('class', 'circleG')
-        .attr('cx', innerWidth/2)
-        .attr('cy', innerHeight/2)
-        .attr('r', 3)
-        .merge(circles)
-        .transition().duration(2000)
-        .attr('cy', d => yScale(yValue(d)))
-        .attr('cx', d => xScale(xValue(d)))
-        .attr('r', 4.5)
-        .attr('fill', d => colorScale(colorValue(d)))
-        .attr('fill-opacity', opacity(dataF));
+        // function size (d) {
+        //     if(d)
+        // }
 
+        if(flag == 0) {
+            circles.enter().append('circle')
+            .attr('class', 'circleG')
+            .attr('cx', innerWidth/2)
+            .attr('cy', innerHeight/2)
+            .attr('r', 4.5)
+            .merge(circles)
+            .attr('r', d => d.sizeP)
+            .transition().duration(2000)
+            .attr('fill', d => colorScale(colorValue(d)))
+            .attr('fill-opacity', opacity(dataF))
+            .attr('cy', d => yScale(yValue(d)))
+            .attr('cx', d => xScale(xValue(d)));
+            
+
+        }
+
+        if(flag == 1) {
+            circles.enter().append('circle')
+            .attr('class', 'circleG')
+            .attr('cx', innerWidth/2)
+            .attr('cy', innerHeight/2)
+            .attr('r', 3)
+            .merge(circles)
+            .attr('fill', d => colorScale(colorValue(d)))
+            .attr('fill-opacity', opacity(dataF))
+            .attr('cy', d => yScale(yValue(d)))
+            .attr('cx', d => xScale(xValue(d)))
+            .attr('r', d => d.sizeP);
+        }
+
+            //  var u = d3.selectAll('.circleG')
+            //   .data(data2)
+        
+            // circles.exit()
+            //   .transition() // and apply changes to all of them
+            //   .duration(2000)
+            //   .style("opacity", 0)
+            //   .remove()
+          
+
+      
+
+            // // Create the u variable
+            // var u = d3.selectAll('.circleG')
+            //   .data(data2)
+          
+            // u
+            //   .transition() // and apply changes to all of them
+            //   .duration(2000)
+            //     .attr("cx",  d => xScale(xValue(d)))
+            //     .attr("cy", d => yScale(yValue(d)))
+            //     .attr('fill', d => colorScale(colorValue(d)))
+            //     .attr('fill-opacity', opacity(dataF))
+            //     .attr("r", 4.5)
+
+            // u
+            // .enter()
+            // .append("circle") // Add a new circle for each new elements
+            // .merge(u) // get the already existing elements as well
+            // .transition() // and apply changes to all of them
+            // .duration(1000)
+            // .attr("cx",  d => xScale(xValue(d)))
+            // .attr("cy", d => yScale(yValue(d)))
+            // .attr('fill', d => colorScale(colorValue(d)))
+            // .attr('fill-opacity', opacity(dataF))
+            // .attr("r", 4.5)
+          
+            // // If less group in the new dataset, I delete the ones not in use anymore
+            // u
+            //   .exit()
+            //   .transition() // and apply changes to all of them
+            //   .duration(2000)
+            //   .style("opacity", 0)
+            //   .remove()
+          
+     
         d3.selectAll('.circleG')
         .on('mouseover', tipMouseover)
         .on('mouseout', tipMouseout);
 
-        d3.selectAll('.circleG');
+        d3.selectAll('.circleG').exit().remove();
         
         d3.selectAll('#svgM').call(d3.zoom().on("zoom",zoomed));
 
@@ -675,7 +752,6 @@
     };
 
     const svg = d3.select('#svgM');
-    new GPU();
 
     const width = document.body.clientWidth;
     const height = document.body.clientHeight - 300;
@@ -692,7 +768,7 @@
     const columns = ['Stellar Mass', 'Stellar Temperature', 'Stellar Radius', 'Stellar Luminosity', 'Planetary Mass', 'Planetary Radius', 'Orbital Period', 'Orbit Semi-Major Axis', 'Planet Density', 'Planet Temperature'];
     var methods = [];
     let dateRange = [new Date("1990"), new Date ("2021")]; 
-    var xRange = [0, 2.5];
+    var xRange = [0, 3];
     var yRange = [2000, 11000];
     var gRangeX;
     var gRangeY;
@@ -702,6 +778,8 @@
     var yOff = -250;
     var xUnits = " (Solar Mass)";
     var yUnits = " (K)";
+    var flag = 0;
+    var dataBuffer = [];
 
     let menusCSS = document.querySelector("#menus");
     menusCSS.style.left = `${(width- width/4 -300)/6}px`;
@@ -709,6 +787,7 @@
 
     const onLegendChange = (methodsF) => {
         methods = methodsF;
+        flag = 1;
         render();
     };
 
@@ -719,7 +798,7 @@
         xOff = xOffset;
         xUnits = units;
         sliderRangeX = slider;
-        sliderRangeX .width(450)
+        sliderRangeX.width(450)
         .fill('#2196f3')
         .on('onchange', val => {
         //     sliderRangeX
@@ -729,6 +808,7 @@
         //    ;
            // sleep(100);
             xRange = sliderRangeX.value();
+            flag = 1;
             render();
         });
         gRangeX = d3
@@ -753,6 +833,8 @@
         .attr('transform', `translate(${xOff},10)`)
         .text(xLabelColumn + ":");
 
+        flag = 0;
+
         render();
     };
     const onYColumnClick = (column, label, slider, range, xOffset, units) => {
@@ -762,7 +844,8 @@
         yOff = xOffset;
         yUnits = units;
         sliderRangeY = slider;
-        sliderRangeY .width(450)
+        sliderRangeY
+        .width(450)
         .fill('#2196f3')
         .on('onchange', val => {
         //     sliderRangeX
@@ -772,6 +855,7 @@
         //    ;
            // sleep(100);
             yRange = sliderRangeY.value();
+            flag = 1;
             render();
         });
         gRangeY = d3
@@ -786,13 +870,15 @@
         .attr('height', '10px')
         .attr('transform', `translate(${yOff},12)`)
         .text(yLabelColumn + ":");
+
+        flag = 0;
         render();
     };
 
     const colorScale = d3.scaleOrdinal()
       .domain(methods)
-      .range(['#f27777',  '#d577f2',
-      '#77d3f2','#777ff2',
+      .range(['#f27777',  '#77d3f2',
+      '#d577f2','#777ff2',
       '#f2d977', '#77f2bb',
       '#c1eb73', '#eb83c8',
       '#edb861'
@@ -816,16 +902,17 @@
     .sliderBottom()
     .min(new Date("1990"))
     .max(new Date("2022"))
+    .ticks(8)
     .step(1000 * 60 * 60 * 24 * 30)
     .width(700)
     .height(50)
     .tickPadding(3)
     .tickFormat(d3.timeFormat('%Y'))
-    .ticks(12)
     .default([new Date("1992"), new Date("2022")])
     .fill('#2196f3')
     .on('onchange', val => {
         dateRange = sliderRangeDate.value();
+        flag = 1;
         render();
     });
 
@@ -853,7 +940,7 @@
     .max(2.6)
     .width(450)
     .height(100)
-    .ticks(10)
+    .ticks(8)
     .default([0, 2.6])
     .fill('#2196f3')
     .on('onchange', val => {
@@ -864,6 +951,7 @@
         //    ;
            // sleep(100);
         xRange = sliderRangeXdef.value();
+        flag = 1;
         render();
     });
 
@@ -896,7 +984,7 @@
     .max(11000)
     .width(450)
     .height(100)
-    .ticks(10)
+    .ticks(6)
     .default([2000, 11000])
     .fill('#2196f3')
     .on('onchange', val => {
@@ -907,6 +995,7 @@
         //    ;
            // sleep(100);
         yRange = sliderRangeYdef.value();
+        flag = 1;
         render();
     });
 
@@ -934,6 +1023,19 @@
 
     const render = () => {
 
+        // var mainscreenURL = "676.jpg";
+        // svg.select(".mainScreen").transition().attr("height",0).remove();
+
+        // svg.append("image")
+        // .on('load', function() {
+        //     alert('loaded');
+        // })
+        // .attr("xlink:href", mainscreenURL)
+         
+
+        // dataFilter.push({type: xColumn,name: NaN},
+        //     {type: yColumn,name: NaN});
+        //console.log(methods)
         var dataM = data.filter(
             
             v => methods.includes(v.discoverymethod)
@@ -943,24 +1045,74 @@
             dataM = data;
         }
 
-        const dataF1 = dataM.filter( v =>
-                !Number.isNaN(v[yColumn]));
+        // const dataF1 = dataM.filter( v =>
+        //         !Number.isNaN(v[yColumn]));
         
-        const dataF2 = dataF1.filter( v =>
-                !Number.isNaN(v[xColumn]));
+        // const dataF2 = dataF1.filter( v =>
+        //         !Number.isNaN(v[xColumn]));
         
-        const dataFX = dataF2.filter(function (v) {
+        const dataFX = dataM.filter(function (v) {
                 if (v.disc_pubdate < dateRange[1] && v.disc_pubdate > dateRange[0]) {
                     return v
                 }
         });
+        console.log(flag);
+     
         const dataF = dataFX.filter(function (v) {
-            if (v[xColumn] < xRange[1] && v[xColumn] > xRange[0]) {
-                if (v[yColumn] < yRange[1] && v[yColumn] > yRange[0]) {
-                    return v
-                }
+            if ((isNaN(v[xColumn]) || isNaN(v[yColumn])) && flag ==0) {
+              v.sizeP = 0;
+               return v
             }
+            else {
+                if (v[xColumn] < xRange[1] && v[xColumn] > xRange[0]) {
+                    if (v[yColumn] < yRange[1] && v[yColumn] > yRange[0]) {
+                        v.sizeP = 0;
+                        return v
+                    }
+                }
+                
+                if (flag == 0) {return v}
+        
+             }
         });
+        console.log(dataFX);
+        
+
+        dataF.filter(function (v) {
+            if (isNaN(v[xColumn]) || isNaN(v[yColumn])) {
+                return v.sizeP = 0;
+            }
+            else {return v.sizeP = 4.5}
+            }
+        );
+        console.log(dataF);
+       //  console.log(dataBuffer)
+        // console.log(dataF[1].pl_name)
+        // console.log(dataBuffer[1].pl_name)
+        // console.log(dataF[1].pl_name === dataBuffer[1].pl_name)
+
+        // if(dataBuffer.length !== 0) {
+        //     if (true) {
+         
+        //         for(var i = 0, len = dataF.length; i < len; i++){
+        //             if (dataBuffer.some(e => e.pl_name === dataF[i].pl_name)) {
+                           
+        //             }
+        //             else { 
+        //                 console.log("spl");
+        //                 dataF.splice(i,1);
+        //                // i = i-1;
+        //             }
+        
+                  
+        //         }
+        //     }
+        //   //  console.log(dataPush)
+
+        //     console.log(dataF)
+        // }
+        
+       
 
         d3.select('#x_menu')
         .call(dropDown, {
@@ -997,10 +1149,12 @@
             height,
             xUnits,
             yUnits,
+            flag,
             dateRange: dateRange,
             colorScale: colorScale,
             colorValue: d => d.discoverymethod,
-            data: dataF
+            data: dataF,
+            data2: dataBuffer
        });
 
        const gLegendEnter = svg.append('g')
@@ -1021,11 +1175,15 @@
 
        gLegend.exit().remove();
 
-       console.log(dataF);
+       dataBuffer = dataF;
+
+       flag = 0;
+
+       
 
     };
 
-    d3.csv('https://raw.githubusercontent.com/Maropro3/DataUpload/main/ExoplanetsTestFULL.csv').then(loadedData => {
+    d3.csv('https://raw.githubusercontent.com/Maropro3/DataUpload/main/ExoplanetsConfirmed.csv').then(loadedData => {
        
         loadedData.forEach(clearFunction);
 
@@ -1049,7 +1207,7 @@
             d.pl_eqt = +d.pl_eqt;
             d.disc_pubdate = new Date(d.disc_pubdate);
         });
-        console.log(loadedData);
+       // console.log(loadedData);
 
         var nest = d3.nest()
         .key(function(d) { return d.discoverymethod; })
@@ -1067,9 +1225,10 @@
             
         }
 
+       // console.log(nest)
+
         methods = test;
 
-        console.log(test);
 
         for(var i = 0, len = loadedData.length; i < len-4; i++){
 
@@ -1079,24 +1238,31 @@
                   } 
             }
         }
+     
 
         loadedData.sort(function(a,b){
             return a.disc_pubdate - b.disc_pubdate;
         });
-        
-        const dataF1 = loadedData.filter( v =>
-                !Number.isNaN(v[yColumn]));
-        
-        const dataF2 = dataF1.filter( v =>
-                !Number.isNaN(v[xColumn]));
-        
-        const dataF = dataF2.filter(function (v) {
-                if (v.disc_pubdate < dateRange[1] && v.disc_pubdate > dateRange[0]) {
-                    return v
-                }
-        });
 
-        data = dataF;
+
+        // dataFilter.push({type: xColumn,name: NaN},
+        //     {type: yColumn,name: NaN});
+        
+        // const dataF1 = loadedData.filter( v =>
+        //         !Number.isNaN(v[yColumn]));
+        
+        // const dataF2 = dataF1.filter( v =>
+        //         !Number.isNaN(v[xColumn]));
+        
+        // const dataF = loadedData.filter(function (v) {
+        //         if (v.disc_pubdate < dateRange[1] && v.disc_pubdate > dateRange[0]) {
+        //             return v
+        //         }
+        // });
+        //console.log(dataF);
+      //  console.log(loadedData);
+
+        data = loadedData;
 
       render();
       

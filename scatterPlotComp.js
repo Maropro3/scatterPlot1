@@ -14,10 +14,13 @@ export const scatterPlot = (selection, props) => {
         height,
         xUnits,
         yUnits,
+        flag,
         dateRange,
         colorScale,
         colorValue,
-        data
+        data,
+        data2
+        
 
     } = props;
 
@@ -169,7 +172,7 @@ export const scatterPlot = (selection, props) => {
     }
    }
 
-   d3.selectAll('.tooltip').remove();
+  d3.selectAll('.tooltip').remove();
    
     var tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
@@ -278,24 +281,92 @@ export const scatterPlot = (selection, props) => {
     
     const circles =  gZ.merge(gZEnter).selectAll('circle').data(dataF);
 
-   circles.enter().append('circle')
-    .attr('class', 'circleG')
-    .attr('cx', innerWidth/2)
-    .attr('cy', innerHeight/2)
-    .attr('r', 3)
-    .merge(circles)
-    .transition().duration(2000)
-    .attr('cy', d => yScale(yValue(d)))
-    .attr('cx', d => xScale(xValue(d)))
-    .attr('r', 4.5)
-    .attr('fill', d => colorScale(colorValue(d)))
-    .attr('fill-opacity', opacity(dataF));
+    // function size (d) {
+    //     if(d)
+    // }
 
+    if(flag == 0) {
+        circles.enter().append('circle')
+        .attr('class', 'circleG')
+        .attr('cx', innerWidth/2)
+        .attr('cy', innerHeight/2)
+        .attr('r', 4.5)
+        .merge(circles)
+        .attr('r', d => d.sizeP)
+        .transition().duration(2000)
+        .attr('fill', d => colorScale(colorValue(d)))
+        .attr('fill-opacity', opacity(dataF))
+        .attr('cy', d => yScale(yValue(d)))
+        .attr('cx', d => xScale(xValue(d)))
+        
+
+    }
+
+    if(flag == 1) {
+        circles.enter().append('circle')
+        .attr('class', 'circleG')
+        .attr('cx', innerWidth/2)
+        .attr('cy', innerHeight/2)
+        .attr('r', 3)
+        .merge(circles)
+        .attr('fill', d => colorScale(colorValue(d)))
+        .attr('fill-opacity', opacity(dataF))
+        .attr('cy', d => yScale(yValue(d)))
+        .attr('cx', d => xScale(xValue(d)))
+        .attr('r', d => d.sizeP);
+    }
+
+        //  var u = d3.selectAll('.circleG')
+        //   .data(data2)
+    
+        // circles.exit()
+        //   .transition() // and apply changes to all of them
+        //   .duration(2000)
+        //   .style("opacity", 0)
+        //   .remove()
+      
+
+  
+
+        // // Create the u variable
+        // var u = d3.selectAll('.circleG')
+        //   .data(data2)
+      
+        // u
+        //   .transition() // and apply changes to all of them
+        //   .duration(2000)
+        //     .attr("cx",  d => xScale(xValue(d)))
+        //     .attr("cy", d => yScale(yValue(d)))
+        //     .attr('fill', d => colorScale(colorValue(d)))
+        //     .attr('fill-opacity', opacity(dataF))
+        //     .attr("r", 4.5)
+
+        // u
+        // .enter()
+        // .append("circle") // Add a new circle for each new elements
+        // .merge(u) // get the already existing elements as well
+        // .transition() // and apply changes to all of them
+        // .duration(1000)
+        // .attr("cx",  d => xScale(xValue(d)))
+        // .attr("cy", d => yScale(yValue(d)))
+        // .attr('fill', d => colorScale(colorValue(d)))
+        // .attr('fill-opacity', opacity(dataF))
+        // .attr("r", 4.5)
+      
+        // // If less group in the new dataset, I delete the ones not in use anymore
+        // u
+        //   .exit()
+        //   .transition() // and apply changes to all of them
+        //   .duration(2000)
+        //   .style("opacity", 0)
+        //   .remove()
+      
+ 
     d3.selectAll('.circleG')
     .on('mouseover', tipMouseover)
     .on('mouseout', tipMouseout);
 
-    d3.selectAll('.circleG');
+    d3.selectAll('.circleG').exit().remove();
     
     d3.selectAll('#svgM').call(d3.zoom().on("zoom",zoomed));
 

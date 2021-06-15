@@ -15,8 +15,18 @@ export const colorLegend = (selection, props) => {
       methodsF.push(d3.select(this).selectAll('text').text());
       onLegendChange(methodsF);
     }
+    else if(methodsF.length === 6) {
+      d3.selectAll('.gLegend')
+      .attr('opacity', 0.2)
+      d3.select(this)   
+      .attr('opacity', 1);
+      methodsF = [];
+      methodsF.push(d3.select(this).selectAll('text').text());
+      onLegendChange(methodsF);
+     }
     else {
       if ( d3.select(this).attr('opacity') == 1) { 
+
         d3.select(this)   
         .attr('opacity', 0.2);
         methodsF = methodsF.filter (
@@ -30,8 +40,9 @@ export const colorLegend = (selection, props) => {
       methodsF.push(d3.select(this).selectAll('text').text());
       onLegendChange(methodsF);
       }
-      
     }
+   
+ 
   };
 
   const onDBCLick = function(event, d){
@@ -106,11 +117,6 @@ const labels = entries.append('text')
   .style('user-select', 'none') 
   .style('fill', '#a8a09e')
   .text(d => d);
-
-
-
-
-  
 }
 
 
